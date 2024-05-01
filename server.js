@@ -1,25 +1,29 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/users');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(cors());
+// Middleware para processar o corpo da requisição no formato JSON
+app.use(express.json());
+
+// URL de conexão com o MongoDB Atlas
+const mongoURI = 'mongodb+srv://skillswap2024:fabrica2024@skillswap.luedgej.mongodb.net/myapp?retryWrites=true&w=majority';
 
 // Conexão com o banco de dados MongoDB
-mongoose.connect('mongodb://localhost:27017/troca-habilidades', { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Erro de conexão com o MongoDB:'));
-db.once('open', () => console.log('Conexão bem-sucedida com o MongoDB'));
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Conexão com o banco de dados estabelecida com sucesso');
+    })
+    .catch((error) => {
+        console.error('Erro ao conectar ao banco de dados:', error);
+    });
 
-// Rotas para manipulação de usuários
+// Rotas para usuários
 app.use('/api/users', userRoutes);
 
-// Inicialização do servidor
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+// Porta em que o servidor irá escutar as requisições
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
 });
