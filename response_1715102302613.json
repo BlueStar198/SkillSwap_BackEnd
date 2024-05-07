@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "663a5d407016fede4d4794de",
+    "name": "string",
+    "email": "string",
+    "skillsOffered": [],
+    "skillsWanted": [],
+    "__v": 0
+  },
+  {
+    "_id": "663a6229c4068343aef7eb0e",
+    "name": "joao",
+    "email": "jaofront@gmail.com",
+    "skillsOffered": [],
+    "skillsWanted": [],
+    "__v": 0
+  }
+]

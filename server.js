@@ -1,29 +1,33 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
+const { specs, swaggerUi } = require('./swagger');
 const userRoutes = require('./routes/users');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware para processar o corpo da requisição no formato JSON
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors());
 
-// URL de conexão com o MongoDB Atlas
+// Conexão com o banco de dados MongoDB (MongoDB Atlas)
 const mongoURI = 'mongodb+srv://skillswap2024:fabrica2024@skillswap.luedgej.mongodb.net/myapp?retryWrites=true&w=majority';
+mongoose.connect(mongoURI, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Erro de conexão com o MongoDB:'));
+db.once('open', () => console.log('Conexão bem-sucedida com o MongoDB'));
 
-// Conexão com o banco de dados MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('Conexão com o banco de dados estabelecida com sucesso');
-    })
-    .catch((error) => {
-        console.error('Erro ao conectar ao banco de dados:', error);
-    });
+// Rotas para manipulação de usuários
+app.use('/users', userRoutes);
 
-// Rotas para usuários
-app.use('/api/users', userRoutes);
+// Rota para a documentação da API
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Porta em que o servidor irá escutar as requisições
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
+// Inicialização do servidor
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
