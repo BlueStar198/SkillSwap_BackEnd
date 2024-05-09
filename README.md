@@ -31,3 +31,4 @@ Este repositório contém o código-fonte do backend da aplicação, responsáve
 4. Inicie o servidor localmente utilizando o comando `npm start`.
 5. O backend estará disponível em `http://localhost:3000` por padrão.
 
+## Este codigo conectará com meu banco de dados que esta no MongoDB, então não vai funcionar até eu ligar o cluster do mongoDB
